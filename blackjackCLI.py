@@ -8,7 +8,7 @@ values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8,
 
 playing = True
 
-#clear console method
+# clear console method
 def clear():
     if name == 'nt':
         _ = system('cls')
@@ -16,7 +16,7 @@ def clear():
     else:
         _ = system('clear')
 
-#creating card class#
+# creating card class
 class Card:
 
     def __init__(self, suit, rank):
@@ -26,19 +26,19 @@ class Card:
     def __str__(self):
         return self.rank + ' of ' + self.suit
 
-#creating Deck, shuffle function and single dealing#
+# creating Deck, shuffle function and single dealing
 class Deck:
 
     def __init__(self):
-        self.deck = []  # start with an empty list#
+        self.deck = []  # start with an empty list, append cards to build the deck
         for suit in suits:
             for rank in ranks:
                 self.deck.append(Card(suit, rank))
 
     def __str__(self):
-        deck_comp = '' #starting competition deck empty#
+        deck_comp = '' # starting competition deck empty
         for card in self.deck:
-            deck_comp += '\n' + card.__str__() #add each card object's string
+            deck_comp += '\n' + card.__str__() # add each card object's string
         return 'The deck has' + deck_comp
 
     def shuffle(self):
@@ -48,12 +48,12 @@ class Deck:
         single_card = self.deck.pop()
         return single_card
 
-#creating a hand#
+# creating a hand
 class Hand:
     def __init__(self):
-        self.cards = []  # start with an empty list as we did in the Deck class
-        self.value = 0   # start with zero value
-        self.aces = 0    # add an attribute to keep track of aces
+        self.cards = []  
+        self.value = 0   
+        self.aces = 0    
 
     def add_card(self,card):
         self.cards.append(card)
@@ -66,11 +66,11 @@ class Hand:
             self.value -= 10
             self.aces -= 1
 
-#creating Chips balance
+# creating Chips balance
 class Chips:
 
     def __init__(self):
-        self.total = 5000  # This can be set to a default value or supplied by a user input
+        self.total = 5000  # starting balance of $5000
         self.bet = 0
 
     def win_bet(self):
@@ -79,7 +79,7 @@ class Chips:
     def lose_bet(self):
         self.total -= self.bet
 
-#Taking bets#
+# method to take bet
 def take_bet(chips):
     while True:
         print("You have %d dollars in the bank " %(chips.total))
@@ -93,12 +93,12 @@ def take_bet(chips):
             else:
                 break
 
-# taking hits#
+# method to take hits
 def hit(deck,hand):
     hand.add_card(deck.deal())
     hand.adjust_for_ace()
 
-#player to take hits or stand
+# player chooses to hit, stand, or doubledown (if first hand)
 def hit_or_stand(deck,hand,chips):
     global playing
     global firstRound
@@ -139,10 +139,9 @@ def hit_or_stand(deck,hand,chips):
         else:
             print("Sorry, please try again.")
             continue
-        # firstRound = False
         break
 
-#player to take hits or stand on split hands
+# player chooses to hit or stand on split hands
 def hit_or_stand_on_split(deck,firstHand,secondHand,chips1,chips2):
         global playing
         global onFirstHand
@@ -177,7 +176,7 @@ def hit_or_stand_on_split(deck,firstHand,secondHand,chips1,chips2):
                         print("Player stands on 1st hand.")
                         onFirstHand = False
                         onSecondHand = True
-                        firstRound = True   #sets up first round for second hand
+                        firstRound = True   # sets up first round for second hand
 
                     elif x[0].lower() == 'd':
                         print("Player double downs on 1st hand.")
@@ -204,7 +203,6 @@ def hit_or_stand_on_split(deck,firstHand,secondHand,chips1,chips2):
                         continue
                     break
 
-            # firstRound = True
             if onSecondHand:
 
                 if firstRound:
@@ -244,7 +242,7 @@ def hit_or_stand_on_split(deck,firstHand,secondHand,chips1,chips2):
                 break
 
 
-#player to split
+# player chooses to split hand
 def split(deck,hand):
 
     playerCards = getattr(hand, "cards")
@@ -262,7 +260,7 @@ def split(deck,hand):
     return hand1, hand2
 
 
-#functions to display cards#
+# methods to display cards
 def show_some(player,dealer):
     clear()
     print("\nDealer's Hand:")
@@ -297,13 +295,13 @@ def show_all_with_split(player1st,player2nd,dealer):
     print("\nPlayer's 2nd Hand: ", *player2nd.cards, sep= '\n' + " "*3)
     print("Player's 2nd Hand = ", player2nd.value)
 
-#function to compare player's first 2 cards for split
+# method to compare player's first 2 cards for split
 def compare_cards(player):
     playerCards = getattr(player, "cards")
     card1 = str(playerCards[0])
     card2 = str(playerCards[1])
 
-    #get number or face of card
+    # get number or face of card
     card1 = card1.split()[0]
     card2 = card2.split()[0]
 
@@ -312,9 +310,8 @@ def compare_cards(player):
     else:
         return False
 
-#functions to handle game scenarios#
+# methods to handle game scenarios
 def player_busts(player,dealer,chips):
-    # player = str(player)
     if player[0] == 'f':
         print("\nPlayer busts on first hand!")
         chips.lose_bet()
@@ -370,9 +367,8 @@ def push_both(player1st,player2nd,dealer):
     print("\nDealer and Player tie both hands! It's a push.")
 
 
-
 #NOW FOR THE GAME
-# added to take care of hand object:
+# added to take care of hand object
 player = "player"
 first = "first"
 second = "second"
@@ -399,21 +395,21 @@ while True:
     dealer_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
 
-    #hands for if player splits
+    # hands for if player splits
     firstHand = Hand()
     secondHand = Hand()
 
-    # Prompt the Player for their bet
+    # prompt the player for their bet
     take_bet(player_chips)
 
-    # Show cards (but keep one dealer card hidden)
+    # show cards (but keep one dealer card hidden)
     show_some(player_hand, dealer_hand)
 
     splitting = False
 
     firstRound = True
 
-    #prompt for split
+    # prompt for split
     if compare_cards(player_hand):
         while True:
             choice = input("\nWould you like to split your cards (y/n) ?: ")
@@ -431,8 +427,6 @@ while True:
                 firstHand_chips.bet = player_chips.bet
                 secondHand_chips.total = player_chips.total
                 secondHand_chips.bet = player_chips.bet
-                # print(firstHand_chips.total, firstHand_chips.bet)
-                # print(secondHand_chips.total, secondHand_chips.bet)
 
                 # keep track of which hand playing on
                 onFirstHand = True
@@ -448,20 +442,20 @@ while True:
                 splitting = False
                 break
 
-            # Reruns loop if player didn't choose y or n
+            # reruns loop if player didn't choose y or n
             else:
                 print("Sorry, please try again")
                 continue
 
 
-    while playing:  # recall this variable from our hit_or_stand function
+    while playing:  
 
         #play on both player hands
         if splitting:
 
             hit_or_stand_on_split(deck,firstHand,secondHand,firstHand_chips,secondHand_chips)
 
-            # Show both hands but keep one dealer card hidden
+            # show both hands but keep one dealer card hidden
             show_some_with_split(firstHand,secondHand,dealer_hand)
 
             if firstHand.value > 21:
@@ -473,32 +467,32 @@ while True:
                 break
 
 
-        #hit or stand on one hand
+        # hit or stand on one hand
         else:
-            # Prompt for Player to Hit or Stand
+            # prompt for player to hit or stand
             hit_or_stand(deck, player_hand, player_chips)
 
-            # Show cards (but keep one dealer card hidden)
+            # show cards (but keep one dealer card hidden)
             show_some(player_hand,dealer_hand)
 
-            # If player's hand exceeds 21, run player_busts() and break out of loop
+            # if player's hand exceeds 21, run player_busts() and break out of loop
             if player_hand.value >21:
                 player_busts(player, dealer_hand, player_chips)
 
                 break
 
 
-    # If Player hasn't busted, play Dealer's hand until Dealer reaches 17
+    # if Player hasn't busted, play dealer's hand until dealer reaches 17
     # if player didn't split
     if player_hand.value <= 21 and splitting == False:
 
         while dealer_hand.value < 17:
             hit(deck, dealer_hand)
 
-        # Show all cards
+        # show all cards
         show_all(player_hand,dealer_hand)
 
-        # Run different winning scenarios
+        # run different winning scenarios
         if dealer_hand.value > 21:
             dealer_busts(player,dealer_hand,player_chips)
 
@@ -511,7 +505,7 @@ while True:
         else:
             push(player,dealer_hand)
 
-    # If Player split
+    # if player split
     elif splitting:
 
         # player busts both hands - dealer doesn't draw
@@ -619,16 +613,18 @@ while True:
         player_chips.total = (firstHand_chips.total + secondHand_chips.total) - player_chips.total
 
 
-    # Inform Player of their chips total
+    # inform player of their chips total
     print("\nUpdated amount in bank: ", player_chips.total)
 
-    # Ask to play again
+    # ask to play again
     new_game = input("Would you like to play again (y/n) ?: ")
     clear()
 
     if new_game[0].lower() == 'y':
         playing = True
         continue
+    # player chooses to end game
+    # outputs their total amount of money left, and net loss or profit
     else:
         print("Total amount left in the bank: $", player_chips.total)
         if player_chips.total <= 5000:
