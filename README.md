@@ -4,3 +4,4 @@ I originally programmed this game in January 2022 for the purpose of implementin
 This CLI version gives players a starting amount of $5000 in the bank to bet. Players get the option to hit, stand, and double down on their first hand. Then, the option to hit or stand for each consecutive hand. When applicable, players get the option to split on their first hand. 
 ----
 Hope this is helpful for those creating their own game!
+----
